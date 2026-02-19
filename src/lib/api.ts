@@ -5,6 +5,18 @@ import type { AgentRun } from "./mock-data";
  * Update this with your backend API endpoint
  */
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+const API_KEY = import.meta.env.VITE_API_KEY || "";
+
+/**
+ * Get API headers with authentication
+ */
+function getHeaders(): HeadersInit {
+  return {
+    "Content-Type": "application/json",
+    "X-API-Key": API_KEY,
+    "Authorization": `Bearer ${API_KEY}`,
+  };
+}
 
 /**
  * Analyze a repository and get bug fix results
@@ -21,9 +33,7 @@ export async function analyzeRepository(
   try {
     const response = await fetch(`${API_BASE_URL}/analyze`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getHeaders(),
       body: JSON.stringify({
         repo,
         team,
@@ -32,6 +42,12 @@ export async function analyzeRepository(
     });
 
     if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error("Invalid API key. Please check your configuration.");
+      }
+      if (response.status === 403) {
+        throw new Error("Access forbidden. API key may not have required permissions.");
+      }
       throw new Error(`API Error: ${response.statusText}`);
     }
 
@@ -54,7 +70,9 @@ export async function getAnalysisStatus(runId: string): Promise<{
   message: string;
 }> {
   try {
-    const response = await fetch(`${API_BASE_URL}/status/${runId}`);
+    const response = await fetch(`${API_BASE_URL}/status/${runId}`, {
+      headers: getHeaders(),
+    });
     
     if (!response.ok) {
       throw new Error(`API Error: ${response.statusText}`);
@@ -64,5 +82,23 @@ export async function getAnalysisStatus(runId: string): Promise<{
   } catch (error) {
     console.error("Failed to get analysis status:", error);
     throw error;
+  }
+}
+
+/**
+ * Verify API key is valid
+ * @returns Promise with verification result
+ */
+export async function verifyApiKey(): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/verify`, {
+      method: "GET",
+      headers: getHeaders(),
+    });
+    
+    return response.ok;
+  } catch (error) {
+    console.error("Failed to verify API key:", error);
+    return false;
   }
 }
