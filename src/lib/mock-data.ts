@@ -13,6 +13,12 @@ export interface CICDRun {
   status: "passed" | "failed";
   timestamp: string;
   duration: string;
+  failureReason?: string;
+  failedTests?: string[];
+  errorLog?: string;
+  testsRun?: number;
+  testsPassed?: number;
+  checks?: string[];
 }
 
 export interface AgentRun {
@@ -40,7 +46,7 @@ export const mockRun: AgentRun = {
   leaderName: "SAIYAM_KUMAR",
   branch: "RIFT_ORGANISERS_SAIYAM_KUMAR_AI_Fix",
   bugsDetected: 14,
-  fixesApplied: 13,
+  fixesApplied: 14,
   cicdResult: "passed",
   executionTime: "2m 34s",
   score: {
@@ -58,7 +64,7 @@ export const mockRun: AgentRun = {
     { id: 6, file: "src/helpers/format.ts", bugType: "INDENTATION", line: 28, commitMessage: "fix: normalize indentation to 2 spaces", status: "fixed" },
     { id: 7, file: "src/config/db.ts", bugType: "SYNTAX", line: 5, commitMessage: "fix: missing semicolon", status: "fixed" },
     { id: 8, file: "src/routes/index.ts", bugType: "TYPE", line: 22, commitMessage: "fix: type mismatch in route params", status: "fixed" },
-    { id: 9, file: "src/middleware/cors.ts", bugType: "LOGIC", line: 11, commitMessage: "fix: allow correct origin headers", status: "failed" },
+    { id: 9, file: "src/middleware/cors.ts", bugType: "LOGIC", line: 11, commitMessage: "fix: allow correct origin headers", status: "fixed" },
     { id: 10, file: "src/utils/logger.ts", bugType: "IMPORT", line: 1, commitMessage: "fix: wrong module path for logger", status: "fixed" },
     { id: 11, file: "src/models/user.ts", bugType: "LINTING", line: 34, commitMessage: "fix: trailing comma enforcement", status: "fixed" },
     { id: 12, file: "src/controllers/api.ts", bugType: "SYNTAX", line: 56, commitMessage: "fix: unexpected token in template literal", status: "fixed" },
@@ -66,9 +72,57 @@ export const mockRun: AgentRun = {
     { id: 14, file: "src/index.ts", bugType: "TYPE", line: 2, commitMessage: "fix: add missing generic type parameter", status: "fixed" },
   ],
   cicdRuns: [
-    { id: 1, iteration: 1, status: "failed", timestamp: "2026-02-19T10:15:00Z", duration: "1m 12s" },
-    { id: 2, iteration: 2, status: "failed", timestamp: "2026-02-19T10:18:00Z", duration: "1m 05s" },
-    { id: 3, iteration: 3, status: "passed", timestamp: "2026-02-19T10:21:00Z", duration: "0m 58s" },
+    { 
+      id: 1, 
+      iteration: 1, 
+      status: "passed", 
+      timestamp: new Date(Date.now() - 6 * 60 * 1000).toISOString(), // 6 minutes ago
+      duration: "1m 12s",
+      testsRun: 47,
+      testsPassed: 47,
+      checks: [
+        "✓ ESLint validation passed",
+        "✓ TypeScript compilation successful",
+        "✓ Unit tests passed (32/32)",
+        "✓ Integration tests passed (15/15)",
+        "✓ Build process completed",
+        "✓ No security vulnerabilities detected"
+      ]
+    },
+    { 
+      id: 2, 
+      iteration: 2, 
+      status: "passed", 
+      timestamp: new Date(Date.now() - 3 * 60 * 1000).toISOString(), // 3 minutes ago
+      duration: "1m 05s",
+      testsRun: 47,
+      testsPassed: 47,
+      checks: [
+        "✓ Code formatting verified",
+        "✓ Type safety checks passed",
+        "✓ All imports resolved correctly",
+        "✓ Unit tests passed (32/32)",
+        "✓ Integration tests passed (15/15)",
+        "✓ Performance benchmarks met"
+      ]
+    },
+    { 
+      id: 3, 
+      iteration: 3, 
+      status: "passed", 
+      timestamp: new Date(Date.now() - 1 * 60 * 1000).toISOString(), // 1 minute ago
+      duration: "0m 58s",
+      testsRun: 47,
+      testsPassed: 47,
+      checks: [
+        "✓ Final validation complete",
+        "✓ All linting rules satisfied",
+        "✓ Zero type errors",
+        "✓ Unit tests passed (32/32)",
+        "✓ Integration tests passed (15/15)",
+        "✓ Ready for deployment"
+      ]
+    },
   ],
 };
 

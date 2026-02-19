@@ -4,7 +4,6 @@ import type { AgentRun } from "@/lib/mock-data";
 
 const RunSummary = ({ run }: { run: AgentRun }) => {
   const stats = [
-    { label: "Repository", value: run.repo.split("/").slice(-1)[0], icon: GitBranch },
     { label: "Bugs Detected", value: run.bugsDetected, icon: Bug },
     { label: "Fixes Applied", value: run.fixesApplied, icon: Wrench },
     { label: "Execution Time", value: run.executionTime, icon: Timer },
@@ -34,11 +33,19 @@ const RunSummary = ({ run }: { run: AgentRun }) => {
       </div>
 
       <div className="mb-4 rounded-md bg-muted p-3">
+        <div className="mb-1 flex items-center gap-1.5">
+          <GitBranch className="h-3.5 w-3.5 text-muted-foreground" />
+          <span className="font-mono text-xs text-muted-foreground">Repository</span>
+        </div>
+        <p className="font-mono text-sm text-primary break-all">{run.repo}</p>
+      </div>
+
+      <div className="mb-4 rounded-md bg-muted p-3">
         <p className="font-mono text-xs text-muted-foreground">Branch</p>
         <p className="font-mono text-sm text-primary">{run.branch}</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-3 gap-3">
         {stats.map((stat) => (
           <div key={stat.label} className="rounded-md bg-muted p-3">
             <div className="mb-1 flex items-center gap-1.5">
