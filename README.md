@@ -14,6 +14,8 @@ An autonomous AI-powered platform that detects, fixes, and verifies code issues 
 - **Comprehensive Analysis**: Scans entire repositories with detailed file-level reporting
 - **Real-time Monitoring**: Live updates on detected issues and their severity
 
+> ⚠️ **Note**: The dashboard currently uses mock data for demonstration. To analyze real repositories, you need to implement a backend API. See [BACKEND_REQUIREMENTS.md](BACKEND_REQUIREMENTS.md) for details.
+
 ### 🛠️ Autonomous Fixing
 - **AI-Powered Repairs**: Intelligent agents apply context-aware fixes automatically
 - **Structured Commits**: Each fix is committed with descriptive messages following best practices
@@ -71,6 +73,30 @@ npm run dev
 ```
 http://localhost:8080
 ```
+
+### Configuration
+
+Create a `.env` file in the root directory:
+```env
+# Use mock data for demo (default: true)
+VITE_USE_MOCK_DATA=true
+
+# Backend API URL (when using real analysis)
+VITE_API_URL=http://localhost:3000/api
+```
+
+### Enable Real Repository Analysis
+
+The dashboard currently shows mock data. To analyze real repositories:
+
+1. Read [BACKEND_REQUIREMENTS.md](BACKEND_REQUIREMENTS.md) for API specifications
+2. Implement the backend API following the requirements
+3. Update `.env`:
+   ```env
+   VITE_USE_MOCK_DATA=false
+   VITE_API_URL=http://your-backend-url/api
+   ```
+4. Restart the dev server
 
 ## 📦 Available Scripts
 
