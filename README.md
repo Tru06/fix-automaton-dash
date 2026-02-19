@@ -194,10 +194,64 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License.
 
+## 🚀 Deployment
+
+### Deploy to Vercel (Recommended)
+
+1. Install Vercel CLI:
+```bash
+npm install -g vercel
+```
+
+2. Deploy:
+```bash
+vercel
+```
+
+3. Follow the prompts and your app will be live!
+
+Or use the Vercel Dashboard:
+- Go to [vercel.com](https://vercel.com)
+- Import your GitHub repository
+- Vercel will auto-detect Vite and deploy
+
+### Deploy to Netlify
+
+1. Install Netlify CLI:
+```bash
+npm install -g netlify-cli
+```
+
+2. Deploy:
+```bash
+netlify deploy --prod
+```
+
+Or use the Netlify Dashboard:
+- Go to [netlify.com](https://netlify.com)
+- Drag and drop your `dist` folder after running `npm run build`
+
+### Deploy to GitHub Pages
+
+1. Install gh-pages:
+```bash
+npm install --save-dev gh-pages
+```
+
+2. Add to package.json scripts:
+```json
+"deploy": "npm run build && gh-pages -d dist"
+```
+
+3. Deploy:
+```bash
+npm run deploy
+```
+
 ## 🔗 Links
 
 - **Repository**: [https://github.com/Tru06/fix-automaton-dash](https://github.com/Tru06/fix-automaton-dash)
-- **Live Demo**: [http://localhost:8081/dashboard](http://localhost:8081/dashboard)
+- **Live Demo**: Coming soon!
 
 ## 👥 Team
 
