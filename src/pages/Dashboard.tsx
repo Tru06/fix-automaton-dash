@@ -1,7 +1,8 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, AlertCircle } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowLeft, AlertCircle, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import InputPanel from "@/components/dashboard/InputPanel";
 import RunSummary from "@/components/dashboard/RunSummary";
 import FixesTable from "@/components/dashboard/FixesTable";
@@ -14,9 +15,17 @@ import { analyzeRepository } from "@/lib/api";
 const USE_MOCK_DATA = import.meta.env.VITE_USE_MOCK_DATA !== "false";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [isRunning, setIsRunning] = useState(false);
   const [runData, setRunData] = useState<AgentRun | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const handleLogout = () => {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("user_email");
+    localStorage.removeItem("user_name");
+    navigate("/login");
+  };
 
   const handleRun = useCallback(async (repo: string, team: string, leader: string) => {
     setIsRunning(true);
@@ -71,6 +80,15 @@ const Dashboard = () => {
               Run Complete
             </span>
           )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleLogout}
+            className="ml-auto flex items-center gap-2"
+          >
+            <LogOut className="h-4 w-4" />
+            <span className="text-sm">Logout</span>
+          </Button>
         </div>
       </header>
 
