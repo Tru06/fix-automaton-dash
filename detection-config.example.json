@@ -1,0 +1,208 @@
+{
+  "detection": {
+    "enabled": true,
+    "tools": {
+      "eslint": {
+        "enabled": true,
+        "config": ".eslintrc.json",
+        "rules": {
+          "no-unused-vars": "error",
+          "no-console": "warn",
+          "no-debugger": "error",
+          "prefer-const": "error",
+          "no-var": "error"
+        },
+        "plugins": [
+          "react",
+          "react-hooks",
+          "@typescript-eslint",
+          "import",
+          "jsx-a11y"
+        ]
+      },
+      "typescript": {
+        "enabled": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true
+      },
+      "prettier": {
+        "enabled": true,
+        "checkFormatting": true
+      },
+      "semgrep": {
+        "enabled": true,
+        "rules": [
+          "p/security-audit",
+          "p/owasp-top-ten",
+          "p/javascript",
+          "p/typescript"
+        ]
+      },
+      "sonarqube": {
+        "enabled": false,
+        "serverUrl": "http://localhost:9000",
+        "token": "${SONAR_TOKEN}"
+      },
+      "codeql": {
+        "enabled": false,
+        "queries": [
+          "security-extended",
+          "code-scanning"
+        ]
+      },
+      "ai": {
+        "enabled": true,
+        "provider": "openai",
+        "model": "gpt-4",
+        "apiKey": "${OPENAI_API_KEY}",
+        "maxTokens": 2000,
+        "temperature": 0.2
+      }
+    },
+    "categories": {
+      "syntax": {
+        "enabled": true,
+        "severity": "critical",
+        "autoFix": true
+      },
+      "type": {
+        "enabled": true,
+        "severity": "high",
+        "autoFix": true
+      },
+      "logic": {
+        "enabled": true,
+        "severity": "high",
+        "autoFix": false,
+        "requireAI": true
+      },
+      "import": {
+        "enabled": true,
+        "severity": "medium",
+        "autoFix": true
+      },
+      "linting": {
+        "enabled": true,
+        "severity": "low",
+        "autoFix": true
+      },
+      "indentation": {
+        "enabled": true,
+        "severity": "low",
+        "autoFix": true
+      },
+      "security": {
+        "enabled": true,
+        "severity": "critical",
+        "autoFix": false,
+        "requireManualReview": true
+      },
+      "performance": {
+        "enabled": true,
+        "severity": "medium",
+        "autoFix": false
+      },
+      "accessibility": {
+        "enabled": true,
+        "severity": "medium",
+        "autoFix": false
+      }
+    },
+    "accuracy": {
+      "multiToolConsensus": true,
+      "minimumConfidence": 70,
+      "requireMultipleDetections": false,
+      "falsePositiveReduction": true,
+      "contextAwareAnalysis": true
+    },
+    "filters": {
+      "ignorePatterns": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/*.min.js",
+        "**/*.bundle.js",
+        "**/coverage/**",
+        "**/.git/**"
+      ],
+      "fileExtensions": [
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx",
+        ".vue",
+        ".py",
+        ".java",
+        ".go",
+        ".rs"
+      ],
+      "maxFileSize": "1MB"
+    }
+  },
+  "fixing": {
+    "enabled": true,
+    "strategies": {
+      "autoFix": {
+        "enabled": true,
+        "maxAttempts": 3,
+        "validateBeforeApply": true
+      },
+      "aiFix": {
+        "enabled": true,
+        "requireValidation": true,
+        "maxTokens": 4000
+      },
+      "templateFix": {
+        "enabled": true,
+        "customTemplates": []
+      }
+    },
+    "validation": {
+      "syntaxCheck": true,
+      "typeCheck": true,
+      "lintCheck": true,
+      "testExecution": true,
+      "noBugsIntroduced": true
+    },
+    "rollback": {
+      "enabled": true,
+      "keepHistory": true,
+      "autoRollbackOnFailure": true
+    },
+    "prioritization": {
+      "order": [
+        "security",
+        "syntax",
+        "type",
+        "import",
+        "logic",
+        "linting",
+        "indentation"
+      ]
+    },
+    "batching": {
+      "enabled": true,
+      "maxBatchSize": 10,
+      "groupByFile": true,
+      "commitAfterBatch": true
+    }
+  },
+  "cicd": {
+    "enabled": true,
+    "maxIterations": 5,
+    "runTests": true,
+    "runLinting": true,
+    "runTypeCheck": true,
+    "runBuild": true,
+    "timeout": 600000
+  },
+  "reporting": {
+    "verbose": true,
+    "includeContext": true,
+    "showConfidenceScores": true,
+    "exportFormat": "json"
+  }
+}

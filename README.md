@@ -13,8 +13,15 @@ An autonomous AI-powered platform that detects, fixes, and verifies code issues 
 - **Multi-Type Scanning**: Detects linting, syntax, logic, type, import, and indentation errors
 - **Comprehensive Analysis**: Scans entire repositories with detailed file-level reporting
 - **Real-time Monitoring**: Live updates on detected issues and their severity
+- **High Accuracy Detection**: Multi-tool consensus with AI-powered analysis
+  - ESLint, TypeScript, Prettier, Semgrep integration
+  - AST-based semantic analysis
+  - GPT-4 powered logic error detection
+  - Cross-validation to reduce false positives
+  - Confidence scoring (0-100) for each detection
+  - Context-aware analysis based on framework and language
 
-> ⚠️ **Note**: The dashboard currently uses mock data for demonstration. To analyze real repositories, you need to implement a backend API. See [BACKEND_REQUIREMENTS.md](BACKEND_REQUIREMENTS.md) for details.
+> ⚠️ **Note**: The dashboard currently uses mock data for demonstration. To analyze real repositories, you need to implement a backend API. See [BACKEND_REQUIREMENTS.md](BACKEND_REQUIREMENTS.md) and [DETECTION_ALGORITHM.md](DETECTION_ALGORITHM.md) for details.
 
 ### 🛠️ Autonomous Fixing
 - **AI-Powered Repairs**: Intelligent agents apply context-aware fixes automatically
