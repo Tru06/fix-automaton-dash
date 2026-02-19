@@ -255,8 +255,8 @@ npm run deploy
 
 ## 👥 Team
 
-- **Team**: RIFT_ORGANISERS
-- **Leader**: SAIYAM_KUMAR
+- **Team**: BUG_RIPPER
+- **Leader**: Harsh Valiyan
 
 ## 🙏 Acknowledgments
 
@@ -267,4 +267,4 @@ npm run deploy
 
 ---
 
-Made with ❤️ by the RIFT_ORGANISERS team
+Made with ❤️ by the BUG_RIPPER team
