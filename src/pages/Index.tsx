@@ -41,19 +41,12 @@ const Index = () => {
           </p>
 
           <Link
-            to="/signup"
+            to="/dashboard"
             className="inline-flex items-center gap-2 rounded-lg gradient-primary px-6 py-3 font-mono text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
           >
             <Zap className="h-4 w-4" />
-            Get Started
+            Launch Dashboard
             <ArrowRight className="h-4 w-4" />
-          </Link>
-
-          <Link
-            to="/login"
-            className="ml-4 inline-flex items-center gap-2 rounded-lg border border-border bg-card px-6 py-3 font-mono text-sm font-semibold text-foreground transition-all hover:bg-accent"
-          >
-            Sign In
           </Link>
         </motion.div>
 
