@@ -1,0 +1,28 @@
+{
+  "name": "ai-fix-agent-backend",
+  "version": "1.0.0",
+  "description": "Backend API for AI Fix Agent Dashboard",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["ai", "bug-detection", "code-analysis"],
+  "author": "BUG_RIPPER - Harsh Valiyan",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "openai": "^4.20.1",
+    "simple-git": "^3.20.0",
+    "eslint": "^8.54.0",
+    "typescript": "^5.3.2",
+    "axios": "^1.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
