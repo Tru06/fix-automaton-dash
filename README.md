@@ -1,9 +1,5 @@
 # 🤖 AI Fix Agent - Autonomous CI/CD Healing Agent
 
-**RIFT 2026 Hackathon Submission**  
-**Team:** BUG_RIPPER  
-**Leader:** Harsh Valiyan
-
 [![Live Demo](https://img.shields.io/badge/Live-Demo-success)](http://localhost:8080)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue)](https://github.com/Tru06/fix-automaton-dash)
 
@@ -113,15 +109,15 @@ RETRY_LIMIT=5
 
 1. Open dashboard: http://localhost:8080/dashboard
 2. Enter repository URL: `https://github.com/facebook/react`
-3. Enter team name: `BUG_RIPPER`
-4. Enter leader name: `HARSH_VALIYAN`
+3. Enter team name: `YOUR_TEAM`
+4. Enter leader name: `YOUR_NAME`
 5. Click "Run Fix Agent"
 6. View results in 2-5 seconds
 
 ### Expected Output
 
 ```
-Branch Created: BUG_RIPPER_HARSH_VALIYAN_AI_Fix
+Branch Created: YOUR_TEAM_YOUR_NAME_AI_Fix
 Bugs Detected: 18
 Fixes Applied: 14
 CI/CD Status: PASSED
@@ -215,8 +211,8 @@ curl -X POST http://localhost:3000/api/analyze \
   -H "X-API-Key: bugripper_2024_secure_key_harsh_valiyan" \
   -d '{
     "repo": "https://github.com/facebook/react",
-    "team": "BUG_RIPPER",
-    "leader": "HARSH_VALIYAN"
+    "team": "YOUR_TEAM",
+    "leader": "YOUR_NAME"
   }'
 ```
 
@@ -258,14 +254,11 @@ All fix branches follow this format:
 TEAM_NAME_LEADER_NAME_AI_Fix
 ```
 
-Example: `BUG_RIPPER_HARSH_VALIYAN_AI_Fix`
+Example: `YOUR_TEAM_YOUR_NAME_AI_Fix`
 
-## 🤝 Team Members
+## 🤝 Contributors
 
-- **Team Leader:** Harsh Valiyan
-- **Team Name:** BUG_RIPPER
-- **Hackathon:** RIFT 2026
-- **Track:** AI/ML • DevOps Automation • Agentic Systems
+Open source project - contributions welcome!
 
 ## 📄 License
 
@@ -273,17 +266,10 @@ MIT License - See LICENSE file for details
 
 ## 🙏 Acknowledgments
 
-- Built for RIFT 2026 Hackathon
 - Powered by OpenAI GPT-4
 - UI components from shadcn/ui
 - Icons from Lucide React
 
-## 📞 Contact
-
-- **GitHub:** [Tru06](https://github.com/Tru06)
-- **Repository:** [fix-automaton-dash](https://github.com/Tru06/fix-automaton-dash)
-- **LinkedIn:** Tag @RIFT2026 in demo video
-
 ---
 
-**Made with ❤️ by Team BUG_RIPPER for RIFT 2026 Hackathon**
+**Made with ❤️ for autonomous CI/CD healing**
