@@ -80,8 +80,8 @@ Headers:
 Body:
 {
   "repo": "https://github.com/user/repo",
-  "team": "BUG_RIPPER",
-  "leader": "Harsh Valiyan"
+  "team": "YOUR_TEAM",
+  "leader": "YOUR_NAME"
 }
 ```
 
@@ -107,8 +107,8 @@ curl -X POST http://localhost:3000/api/analyze \
   -H "X-API-Key: bugripper_2024_secure_key_harsh_valiyan" \
   -d '{
     "repo": "https://github.com/facebook/react",
-    "team": "BUG_RIPPER",
-    "leader": "Harsh Valiyan"
+    "team": "YOUR_TEAM",
+    "leader": "YOUR_NAME"
   }'
 ```
 
