@@ -17,7 +17,9 @@ export async function cloneRepository(repoUrl, teamName, leaderName) {
     console.log(`Cloning repository: ${repoUrl} to ${repoPath}`);
 
     const git = simpleGit();
-    await git.clone(repoUrl, repoPath);
+    
+    // Use shallow clone for SPEED (only latest commit, no history)
+    await git.clone(repoUrl, repoPath, ['--depth', '1', '--single-branch']);
 
     return {
       path: repoPath,

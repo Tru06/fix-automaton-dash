@@ -48,7 +48,50 @@ export async function analyzeRepository(
       if (response.status === 403) {
         throw new Error("Access forbidden. API key may not have required permissions.");
       }
-      throw new Error(`API Error: ${response.statusText}`);
+      
+      // Try to get detailed error message from response
+      try {
+        const errorData = await response.json();
+        
+        // Handle GitHub Pages URL error
+        if (errorData.suggestedUrl) {
+          throw new Error(
+            `${errorData.message}\n\n` +
+            `You entered: ${errorData.providedUrl}\n` +
+            `Try instead: ${errorData.suggestedUrl}\n\n` +
+            `${errorData.hint}`
+          );
+        }
+        
+        // Handle repository too large error
+        if (errorData.suggestions) {
+          throw new Error(
+            `${errorData.message}\n\n` +
+            `${errorData.issue}\n\n` +
+            `Solution: ${errorData.solution}\n\n` +
+            `Try these smaller repositories:\n` +
+            `${errorData.suggestions.join('\n')}\n\n` +
+            `${errorData.note}`
+          );
+        }
+        
+        // Handle repository not found error
+        if (errorData.checks) {
+          throw new Error(
+            `${errorData.message}\n\n` +
+            `${errorData.checks.join('\n')}\n\n` +
+            `Provided URL: ${errorData.providedUrl}\n\n` +
+            `${errorData.hint}`
+          );
+        }
+        
+        throw new Error(errorData.message || `API Error: ${response.statusText}`);
+      } catch (e) {
+        if (e instanceof Error && (e.message.includes('You entered:') || e.message.includes('Provided URL:'))) {
+          throw e;
+        }
+        throw new Error(`API Error: ${response.statusText}`);
+      }
     }
 
     const data = await response.json();

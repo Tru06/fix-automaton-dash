@@ -6,6 +6,7 @@
 
 @layer base {
   :root {
+    /* Dark mode colors (default) */
     --background: 220 20% 4%;
     --foreground: 210 20% 92%;
 
@@ -56,6 +57,55 @@
 
     --font-mono: 'JetBrains Mono', monospace;
     --font-sans: 'Inter', system-ui, sans-serif;
+  }
+
+  .light {
+    /* Light mode colors */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 185 80% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 160 70% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 185 80% 45%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --success: 160 70% 40%;
+    --success-foreground: 0 0% 100%;
+
+    --glow-primary: 185 80% 45%;
+    --glow-accent: 160 70% 40%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 222.2 84% 4.9%;
+    --sidebar-primary: 185 80% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 96.1%;
+    --sidebar-accent-foreground: 222.2 47.4% 11.2%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 185 80% 45%;
   }
 }
 

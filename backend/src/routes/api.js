@@ -34,6 +34,27 @@ router.post('/analyze', validateApiKey, async (req, res) => {
       });
     }
 
+    // Check if user provided a GitHub Pages URL instead of repo URL (check this FIRST)
+    if (repo.includes('.github.io/')) {
+      const suggestion = repo.replace(/https?:\/\/([^.]+)\.github\.io\/([^\/]+).*/, 'https://github.com/$1/$2');
+      return res.status(400).json({
+        error: 'Invalid repository URL',
+        message: 'You provided a GitHub Pages website URL. Please use the repository URL instead.',
+        providedUrl: repo,
+        suggestedUrl: suggestion,
+        hint: 'Go to your GitHub profile and copy the repository URL, not the deployed website URL'
+      });
+    }
+
+    // Validate repository URL format
+    if (!repo.includes('github.com/')) {
+      return res.status(400).json({
+        error: 'Invalid repository URL',
+        message: 'Please provide a valid GitHub repository URL (e.g., https://github.com/username/repo)',
+        example: 'https://github.com/facebook/react'
+      });
+    }
+
     console.log(`\n🔍 Starting analysis for ${team}/${leader}`);
     console.log(`📦 Repository: ${repo}`);
 
@@ -41,8 +62,8 @@ router.post('/analyze', validateApiKey, async (req, res) => {
     const cloneResult = await cloneRepository(repo, team, leader);
     repoPath = cloneResult.path;
 
-    // Create branch
-    const branchName = `${team}_${leader}_AI_Fix`.replace(/\s+/g, '_');
+    // Create branch with EXACT hackathon format: TEAM_NAME_LEADER_NAME_AI_Fix
+    const branchName = `${team.toUpperCase().replace(/\s+/g, '_')}_${leader.toUpperCase().replace(/\s+/g, '_')}_AI_Fix`;
     await createBranch(repoPath, branchName);
 
     // Analyze repository with AI
@@ -69,9 +90,42 @@ router.post('/analyze', validateApiKey, async (req, res) => {
 
   } catch (error) {
     console.error('❌ Analysis failed:', error);
+    
+    // Provide more helpful error messages
+    let errorMessage = error.message;
+    let errorDetails = {};
+    
+    if (error.message.includes('Filename too long') || error.message.includes('checkout failed')) {
+      errorMessage = 'Repository too large for Windows path limits';
+      errorDetails = {
+        issue: 'This repository has very long file paths that exceed Windows limits',
+        solution: 'Try a smaller repository or use WSL/Linux',
+        suggestions: [
+          'https://github.com/Tru06/Hactoberfest2025',
+          'https://github.com/Tru06/HEALTHCARE-LIFESCIENCES-PROJECT',
+          'https://github.com/airbnb/javascript',
+          'https://github.com/expressjs/express'
+        ],
+        note: 'Large repos like facebook/react and vercel/next.js may have path issues on Windows'
+      };
+    } else if (error.message.includes('Repository not found') || error.message.includes('not found')) {
+      errorMessage = 'Repository not found. Please check:';
+      errorDetails = {
+        checks: [
+          '1. The repository URL is correct and complete',
+          '2. The repository exists and is public',
+          '3. You have access to the repository',
+          '4. The URL is not truncated (check the full name)'
+        ],
+        providedUrl: repo,
+        hint: 'Try accessing the repository in your browser first to verify it exists'
+      };
+    }
+    
     res.status(500).json({
       error: 'Analysis failed',
-      message: error.message
+      message: errorMessage,
+      ...errorDetails
     });
   } finally {
     // Cleanup

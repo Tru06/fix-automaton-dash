@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Test - AI Fix Agent</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #00ff00;
+        }
+        .container {
+            border: 2px solid #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        h1 { color: #00ff00; }
+        input, button {
+            font-family: 'Courier New', monospace;
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+            background: #1a1a1a;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+        button {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { background: #00ff00; color: #0a0a0a; }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #1a1a1a;
+            border: 1px solid #00ff00;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .error { color: #ff0000; }
+        .success { color: #00ff00; }
+        .warning { color: #ffaa00; }
+        .example {
+            background: #1a1a1a;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 3px solid #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Fix Agent - Backend Test</h1>
+        
+        <div class="example">
+            <strong>✅ CORRECT URLs (use these):</strong><br>
+            • https://github.com/facebook/react<br>
+            • https://github.com/h04sh/portfolio<br>
+            • https://github.com/vercel/next.js<br><br>
+            
+            <strong class="error">❌ WRONG URLs (don't use):</strong><br>
+            • https://h04sh.github.io/portfolio/<br>
+            • https://username.github.io/project/<br>
+        </div>
+
+        <form id="testForm">
+            <label>Repository URL:</label>
+            <input type="text" id="repo" value="https://github.com/facebook/react" placeholder="https://github.com/username/repo">
+            
+            <label>Team Name:</label>
+            <input type="text" id="team" value="BUG_RIPPER" placeholder="BUG_RIPPER">
+            
+            <label>Leader Name:</label>
+            <input type="text" id="leader" value="Harsh Valiyan" placeholder="Harsh Valiyan">
+            
+            <button type="submit">🚀 Test Analysis</button>
+        </form>
+
+        <div id="result" class="result" style="display:none;"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        const API_KEY = 'bugripper_2024_secure_key_harsh_valiyan';
+
+        document.getElementById('testForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const repo = document.getElementById('repo').value;
+            const team = document.getElementById('team').value;
+            const leader = document.getElementById('leader').value;
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<span class="warning">⏳ Analyzing repository... This may take 30-60 seconds...</span>';
+
+            try {
+                const response = await fetch(`${API_URL}/analyze`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({ repo, team, leader })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    resultDiv.innerHTML = `<span class="error">❌ ERROR:</span>\n\n${JSON.stringify(data, null, 2)}`;
+                    
+                    if (data.suggestedUrl) {
+                        resultDiv.innerHTML += `\n\n<span class="warning">💡 SUGGESTION:</span>\nTry this URL instead: ${data.suggestedUrl}`;
+                    }
+                } else {
+                    resultDiv.innerHTML = `<span class="success">✅ SUCCESS!</span>\n\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ NETWORK ERROR:</span>\n\n${error.message}\n\nMake sure backend is running on http://localhost:3000`;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -21,10 +21,20 @@ const InputPanel = ({ onRun, isRunning }: InputPanelProps) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
       className="rounded-lg border border-glow bg-card p-6 glow-primary"
+      whileHover={{ 
+        boxShadow: "0 0 30px rgba(var(--primary), 0.2)",
+        borderColor: "rgba(var(--primary), 0.5)"
+      }}
     >
       <div className="mb-4 flex items-center gap-2">
-        <GitBranch className="h-5 w-5 text-primary" />
+        <motion.div
+          animate={{ rotate: [0, 360] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        >
+          <GitBranch className="h-5 w-5 text-primary" />
+        </motion.div>
         <h2 className="font-mono text-sm font-semibold uppercase tracking-wider text-primary">
           Agent Control Panel
         </h2>
@@ -39,9 +49,12 @@ const InputPanel = ({ onRun, isRunning }: InputPanelProps) => {
             type="text"
             value={repo}
             onChange={(e) => setRepo(e.target.value)}
-            placeholder="https://github.com/user/repo"
+            placeholder="https://github.com/username/repo (NOT .github.io)"
             className="w-full rounded-md border border-border bg-muted px-3 py-2 font-mono text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
+          <p className="mt-1 font-mono text-xs text-muted-foreground">
+            ⚠️ Use repository URL, not website URL (no .github.io)
+          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -74,7 +87,7 @@ const InputPanel = ({ onRun, isRunning }: InputPanelProps) => {
         <button
           type="submit"
           disabled={isRunning || !repo || !team || !leader}
-          className="flex w-full items-center justify-center gap-2 rounded-md gradient-primary px-4 py-2.5 font-mono text-sm font-semibold text-primary-foreground transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex w-full items-center justify-center gap-2 rounded-md gradient-primary px-4 py-2.5 font-mono text-sm font-semibold text-primary-foreground transition-all hover:opacity-90 hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
           {isRunning ? (
             <>
