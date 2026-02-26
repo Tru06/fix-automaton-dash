@@ -286,10 +286,7 @@ npm run deploy
 - **Repository**: [https://github.com/Tru06/fix-automaton-dash](https://github.com/Tru06/fix-automaton-dash)
 - **Live Demo**: `http://localhost:8080`
 
-## 👥 Team
 
-- **Team**: BUG_RIPPER
-- **Leader**: Harsh Valiyan
 
 ## 🙏 Acknowledgments
 
