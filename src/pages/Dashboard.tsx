@@ -9,7 +9,7 @@ import FixesTable from "@/components/dashboard/FixesTable";
 import CICDTimeline from "@/components/dashboard/CICDTimeline";
 import ScoreCard from "@/components/dashboard/ScoreCard";
 import AgentPipeline from "@/components/dashboard/AgentPipeline";
-import { mockRun, type AgentRun } from "@/lib/mock-data";
+import { generateMockRun, type AgentRun } from "@/lib/mock-data";
 import { analyzeRepository } from "@/lib/api";
 
 const USE_MOCK_DATA = import.meta.env.VITE_USE_MOCK_DATA !== "false";
@@ -26,52 +26,12 @@ const Dashboard = () => {
 
     try {
       if (USE_MOCK_DATA) {
-        // Simulate agent execution with DYNAMIC mock data
+        // Simulate agent execution time
         await new Promise(resolve => setTimeout(resolve, 2000));
         
-        // Generate unique data based on repo URL
-        const hash = repo.split('').reduce((a, b) => ((a << 5) - a) + b.charCodeAt(0), 0);
-        const bugsDetected = Math.abs(hash % 20) + 10; // 10-30 bugs
-        const fixesApplied = Math.floor(bugsDetected * (0.7 + (Math.abs(hash % 30) / 100))); // 70-100% fixed
-        const baseScore = Math.round((fixesApplied / bugsDetected) * 100);
-        const speedBonus = Math.abs(hash % 15) + 5; // 5-20 bonus
-        const efficiencyPenalty = -Math.abs(hash % 6); // 0 to -5
-        const finalScore = Math.min(100, Math.max(0, baseScore + speedBonus + efficiencyPenalty));
-        
-        // Generate dynamic fixes
-        const fixes = Array.from({ length: bugsDetected }, (_, i) => {
-          const types = ['LINTING', 'SYNTAX', 'LOGIC', 'TYPE', 'IMPORT', 'INDENTATION'] as const;
-          const type = types[Math.abs((hash + i) % types.length)];
-          const line = Math.abs((hash + i * 7) % 200) + 1;
-          const files = ['src/utils.ts', 'src/components/App.tsx', 'src/services/api.ts', 'src/lib/helpers.js', 'src/index.ts'];
-          const file = files[Math.abs((hash + i * 3) % files.length)];
-          
-          return {
-            id: i + 1,
-            file,
-            bugType: type,
-            line,
-            commitMessage: `${type} error in ${file} line ${line} → Fix: ${type.toLowerCase()} issue resolved`,
-            status: (i < fixesApplied ? 'fixed' : 'failed') as 'fixed' | 'failed'
-          };
-        });
-        
-        setRunData({
-          ...mockRun,
-          repo,
-          teamName: team,
-          leaderName: leader,
-          branch: `${team.toUpperCase().replace(/\s+/g, "_")}_${leader.toUpperCase().replace(/\s+/g, "_")}_AI_Fix`,
-          bugsDetected,
-          fixesApplied,
-          score: {
-            base: baseScore,
-            speedBonus,
-            efficiencyPenalty,
-            final: finalScore
-          },
-          fixes
-        });
+        // Generate unique, realistic data based on repository URL
+        const mockData = generateMockRun(repo, team, leader);
+        setRunData(mockData);
       } else {
         // Call real API
         const result = await analyzeRepository(repo, team, leader);

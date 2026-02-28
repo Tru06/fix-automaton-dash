@@ -40,91 +40,102 @@ export interface AgentRun {
   cicdRuns: CICDRun[];
 }
 
-export const mockRun: AgentRun = {
-  repo: "https://github.com/example/buggy-app",
-  teamName: "RIFT_ORGANISERS",
-  leaderName: "SAIYAM_KUMAR",
-  branch: "RIFT_ORGANISERS_SAIYAM_KUMAR_AI_Fix",
-  bugsDetected: 14,
-  fixesApplied: 14,
-  cicdResult: "passed",
-  executionTime: "2m 34s",
-  score: {
-    base: 85,
-    speedBonus: 12,
-    efficiencyPenalty: -4,
-    final: 93,
-  },
-  fixes: [
-    { id: 1, file: "src/utils/parser.ts", bugType: "SYNTAX", line: 42, commitMessage: "fix: missing closing bracket in parser", status: "fixed" },
-    { id: 2, file: "src/api/handler.ts", bugType: "TYPE", line: 15, commitMessage: "fix: incorrect return type annotation", status: "fixed" },
-    { id: 3, file: "src/components/App.tsx", bugType: "IMPORT", line: 3, commitMessage: "fix: unused import removed", status: "fixed" },
-    { id: 4, file: "src/services/auth.ts", bugType: "LOGIC", line: 87, commitMessage: "fix: incorrect conditional check in auth flow", status: "fixed" },
-    { id: 5, file: "src/styles/main.css", bugType: "LINTING", line: 12, commitMessage: "fix: enforce consistent spacing", status: "fixed" },
-    { id: 6, file: "src/helpers/format.ts", bugType: "INDENTATION", line: 28, commitMessage: "fix: normalize indentation to 2 spaces", status: "fixed" },
-    { id: 7, file: "src/config/db.ts", bugType: "SYNTAX", line: 5, commitMessage: "fix: missing semicolon", status: "fixed" },
-    { id: 8, file: "src/routes/index.ts", bugType: "TYPE", line: 22, commitMessage: "fix: type mismatch in route params", status: "fixed" },
-    { id: 9, file: "src/middleware/cors.ts", bugType: "LOGIC", line: 11, commitMessage: "fix: allow correct origin headers", status: "fixed" },
-    { id: 10, file: "src/utils/logger.ts", bugType: "IMPORT", line: 1, commitMessage: "fix: wrong module path for logger", status: "fixed" },
-    { id: 11, file: "src/models/user.ts", bugType: "LINTING", line: 34, commitMessage: "fix: trailing comma enforcement", status: "fixed" },
-    { id: 12, file: "src/controllers/api.ts", bugType: "SYNTAX", line: 56, commitMessage: "fix: unexpected token in template literal", status: "fixed" },
-    { id: 13, file: "src/tests/unit.test.ts", bugType: "INDENTATION", line: 8, commitMessage: "fix: align test block indentation", status: "fixed" },
-    { id: 14, file: "src/index.ts", bugType: "TYPE", line: 2, commitMessage: "fix: add missing generic type parameter", status: "fixed" },
-  ],
-  cicdRuns: [
-    { 
-      id: 1, 
-      iteration: 1, 
-      status: "passed", 
-      timestamp: new Date(Date.now() - 6 * 60 * 1000).toISOString(), // 6 minutes ago
-      duration: "1m 12s",
-      testsRun: 47,
-      testsPassed: 47,
+// Generate unique mock data based on repository URL
+export function generateMockRun(repo: string, team: string, leader: string): AgentRun {
+  // Create a simple hash from the repo URL for consistency
+  const hash = repo.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  
+  // Generate varying numbers based on hash
+  const bugsDetected = 8 + (hash % 15); // 8-22 bugs
+  const fixesApplied = bugsDetected - (hash % 3); // Some might fail
+  const iterations = 2 + (hash % 3); // 2-4 iterations
+  const executionMinutes = 1 + (hash % 4); // 1-4 minutes
+  const executionSeconds = 15 + (hash % 45); // 15-59 seconds
+  
+  const bugTypes: Array<BugFix["bugType"]> = ["LINTING", "SYNTAX", "LOGIC", "TYPE", "IMPORT", "INDENTATION"];
+  const files = [
+    "src/utils/parser.ts", "src/api/handler.ts", "src/components/App.tsx",
+    "src/services/auth.ts", "src/styles/main.css", "src/helpers/format.ts",
+    "src/config/db.ts", "src/routes/index.ts", "src/middleware/cors.ts",
+    "src/utils/logger.ts", "src/models/user.ts", "src/controllers/api.ts",
+    "src/tests/unit.test.ts", "src/index.ts", "src/lib/utils.ts",
+    "src/hooks/useAuth.ts", "src/pages/Dashboard.tsx", "src/api/client.ts"
+  ];
+
+  // Generate fixes
+  const fixes: BugFix[] = [];
+  for (let i = 0; i < bugsDetected; i++) {
+    const bugType = bugTypes[(hash + i) % bugTypes.length];
+    const file = files[(hash + i) % files.length];
+    const line = 5 + ((hash + i * 7) % 95);
+    const status = i < fixesApplied ? "fixed" : "failed";
+    
+    fixes.push({
+      id: i + 1,
+      file,
+      bugType,
+      line,
+      commitMessage: `fix: ${bugType.toLowerCase()} error in ${file.split('/').pop()} line ${line}`,
+      status: status as "fixed" | "failed"
+    });
+  }
+
+  // Generate CI/CD runs with dynamic timestamps
+  const cicdRuns: CICDRun[] = [];
+  const now = Date.now();
+  for (let i = 0; i < iterations; i++) {
+    const minutesAgo = (iterations - i) * 2; // Spread runs over time
+    const testsRun = 30 + (hash % 20);
+    const testsPassed = i === iterations - 1 ? testsRun : testsRun - (hash % 3);
+    
+    cicdRuns.push({
+      id: i + 1,
+      iteration: i + 1,
+      status: i === iterations - 1 ? "passed" : ((hash + i) % 2 === 0 ? "passed" : "failed"),
+      timestamp: new Date(now - minutesAgo * 60 * 1000).toISOString(),
+      duration: `${(hash + i) % 2 + 1}m ${20 + (hash + i * 13) % 40}s`,
+      testsRun,
+      testsPassed,
       checks: [
         "✓ ESLint validation passed",
         "✓ TypeScript compilation successful",
-        "✓ Unit tests passed (32/32)",
-        "✓ Integration tests passed (15/15)",
+        `✓ Unit tests passed (${testsPassed}/${testsRun})`,
         "✓ Build process completed",
         "✓ No security vulnerabilities detected"
       ]
+    });
+  }
+
+  const baseScore = 70 + (hash % 20);
+  const speedBonus = executionMinutes < 3 ? 15 : 10;
+  const efficiencyPenalty = Math.max(0, (bugsDetected - fixesApplied) * -2);
+  
+  return {
+    repo,
+    teamName: team,
+    leaderName: leader,
+    branch: `${team}_${leader}_AI_Fix`,
+    bugsDetected,
+    fixesApplied,
+    cicdResult: "passed",
+    executionTime: `${executionMinutes}m ${executionSeconds}s`,
+    score: {
+      base: baseScore,
+      speedBonus,
+      efficiencyPenalty,
+      final: baseScore + speedBonus + efficiencyPenalty,
     },
-    { 
-      id: 2, 
-      iteration: 2, 
-      status: "passed", 
-      timestamp: new Date(Date.now() - 3 * 60 * 1000).toISOString(), // 3 minutes ago
-      duration: "1m 05s",
-      testsRun: 47,
-      testsPassed: 47,
-      checks: [
-        "✓ Code formatting verified",
-        "✓ Type safety checks passed",
-        "✓ All imports resolved correctly",
-        "✓ Unit tests passed (32/32)",
-        "✓ Integration tests passed (15/15)",
-        "✓ Performance benchmarks met"
-      ]
-    },
-    { 
-      id: 3, 
-      iteration: 3, 
-      status: "passed", 
-      timestamp: new Date(Date.now() - 1 * 60 * 1000).toISOString(), // 1 minute ago
-      duration: "0m 58s",
-      testsRun: 47,
-      testsPassed: 47,
-      checks: [
-        "✓ Final validation complete",
-        "✓ All linting rules satisfied",
-        "✓ Zero type errors",
-        "✓ Unit tests passed (32/32)",
-        "✓ Integration tests passed (15/15)",
-        "✓ Ready for deployment"
-      ]
-    },
-  ],
-};
+    fixes,
+    cicdRuns,
+  };
+}
+
+// Legacy export for backward compatibility
+export const mockRun: AgentRun = generateMockRun(
+  "https://github.com/example/buggy-app",
+  "AI_AGENT",
+  "DEMO"
+);
 
 export const agents = [
   { name: "Repository Agent", status: "complete" as const, description: "Clones & prepares repository" },
