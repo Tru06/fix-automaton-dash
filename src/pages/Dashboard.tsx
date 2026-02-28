@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, AlertCircle } from "lucide-react";
+import { Home, Activity, HelpCircle, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import InputPanel from "@/components/dashboard/InputPanel";
@@ -90,15 +90,45 @@ const Dashboard = () => {
       {/* Header */}
       <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center gap-4 px-6 py-3">
-          <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="h-4 w-4" />
-          </Link>
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 rounded-full bg-primary animate-pulse-slow" />
             <h1 className="font-mono text-sm font-semibold text-foreground">
-              AI Fix Agent Dashboard
+              AI Fix Agent
             </h1>
           </div>
+          
+          {/* Navigation Menu */}
+          <nav className="flex items-center gap-1 ml-6">
+            <Link 
+              to="/" 
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md font-mono text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <Home className="h-3.5 w-3.5" />
+              Home
+            </Link>
+            <Link 
+              to="/dashboard" 
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md font-mono text-xs bg-primary/10 text-primary transition-colors"
+            >
+              <Activity className="h-3.5 w-3.5" />
+              Dashboard
+            </Link>
+            <button 
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md font-mono text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              onClick={() => window.open('https://github.com/Tru06/fix-automaton-dash#readme', '_blank')}
+            >
+              <HelpCircle className="h-3.5 w-3.5" />
+              Help
+            </button>
+            <button 
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md font-mono text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              onClick={() => alert('Settings coming soon!')}
+            >
+              <Settings className="h-3.5 w-3.5" />
+              Settings
+            </button>
+          </nav>
+
           <div className="ml-auto flex items-center gap-3">
             <ThemeToggle />
             {runData && (
