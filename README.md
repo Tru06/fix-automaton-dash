@@ -284,7 +284,7 @@ npm run deploy
 ## 🔗 Links
 
 - **Repository**: [https://github.com/Tru06/fix-automaton-dash](https://github.com/Tru06/fix-automaton-dash)
-- **Live Demo**: `http://localhost:8080`
+- **Live Demo**:  'https://fix-automaton-dash-h4pv.vercel.app/dashboard'
 
 
 
