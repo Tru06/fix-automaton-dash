@@ -9,12 +9,14 @@ interface InputPanelProps {
 
 const InputPanel = ({ onRun, isRunning }: InputPanelProps) => {
   const [repo, setRepo] = useState("");
-  const [team, setTeam] = useState("");
-  const [leader, setLeader] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (repo && team && leader) onRun(repo, team, leader);
+    if (repo) {
+      // Generate default team and leader from repo name
+      const repoName = repo.split('/').pop()?.replace('.git', '') || 'REPO';
+      onRun(repo, 'AI_AGENT', repoName.toUpperCase());
+    }
   };
 
   return (
@@ -49,55 +51,28 @@ const InputPanel = ({ onRun, isRunning }: InputPanelProps) => {
             type="text"
             value={repo}
             onChange={(e) => setRepo(e.target.value)}
-            placeholder="https://github.com/username/repo (NOT .github.io)"
+            placeholder="https://github.com/username/repository"
             className="w-full rounded-md border border-border bg-muted px-3 py-2 font-mono text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
           <p className="mt-1 font-mono text-xs text-muted-foreground">
-            ⚠️ Use repository URL, not website URL (no .github.io)
+            Enter any public GitHub repository to analyze
           </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="mb-1 block font-mono text-xs text-muted-foreground">
-              Team Name
-            </label>
-            <input
-              type="text"
-              value={team}
-              onChange={(e) => setTeam(e.target.value)}
-              placeholder="RIFT_ORGANISERS"
-              className="w-full rounded-md border border-border bg-muted px-3 py-2 font-mono text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block font-mono text-xs text-muted-foreground">
-              Team Leader
-            </label>
-            <input
-              type="text"
-              value={leader}
-              onChange={(e) => setLeader(e.target.value)}
-              placeholder="SAIYAM_KUMAR"
-              className="w-full rounded-md border border-border bg-muted px-3 py-2 font-mono text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </div>
         </div>
 
         <button
           type="submit"
-          disabled={isRunning || !repo || !team || !leader}
+          disabled={isRunning || !repo}
           className="flex w-full items-center justify-center gap-2 rounded-md gradient-primary px-4 py-2.5 font-mono text-sm font-semibold text-primary-foreground transition-all hover:opacity-90 hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
           {isRunning ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              Agent Running...
+              Analyzing Repository...
             </>
           ) : (
             <>
               <Play className="h-4 w-4" />
-              Run Fix Agent
+              Analyze Repository
             </>
           )}
         </button>
