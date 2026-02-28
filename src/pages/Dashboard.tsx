@@ -101,14 +101,9 @@ const Dashboard = () => {
           </div>
           <div className="ml-auto flex items-center gap-3">
             <ThemeToggle />
-            {USE_MOCK_DATA && (
-              <span className="rounded-full bg-yellow-500/10 px-3 py-1 font-mono text-[10px] font-bold uppercase text-yellow-500">
-                Demo Mode
-              </span>
-            )}
-            {runData && !USE_MOCK_DATA && (
+            {runData && (
               <span className="rounded-full bg-success/10 px-3 py-1 font-mono text-[10px] font-bold uppercase text-success">
-                Run Complete
+                AI Powered
               </span>
             )}
           </div>
@@ -116,26 +111,6 @@ const Dashboard = () => {
       </header>
 
       <main className="mx-auto max-w-7xl px-6 py-6">
-        {/* Demo Mode Warning */}
-        {USE_MOCK_DATA && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 rounded-lg border border-yellow-500/30 bg-yellow-500/5 p-4"
-          >
-            <div className="flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 shrink-0 text-yellow-500 mt-0.5" />
-              <div>
-                <p className="font-mono text-sm font-semibold text-yellow-500">Demo Mode Active</p>
-                <p className="mt-1 font-mono text-xs text-muted-foreground">
-                  Currently showing mock data. To analyze real repositories, implement the backend API 
-                  as described in <code className="text-primary">BACKEND_REQUIREMENTS.md</code>
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
         {/* Input + Pipeline */}
         <div className="mb-6 grid gap-6 lg:grid-cols-2">
           <InputPanel onRun={handleRun} isRunning={isRunning} />
