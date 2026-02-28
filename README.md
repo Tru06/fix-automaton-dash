@@ -297,4 +297,4 @@ npm run deploy
 
 ---
 
-Made with ❤️ by the BUG_RIPPER team
+Made with Dignity⚡ 
